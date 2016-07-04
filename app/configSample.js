@@ -1,3 +1,4 @@
+// rename to config.js with your own settings.
 
 const config = {
   port: 8001,
