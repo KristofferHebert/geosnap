@@ -1,0 +1,8 @@
+node_modules
+.DS_Store
+*.log
+*.psd
+config.js
+dump
+dump/*
+*.zip

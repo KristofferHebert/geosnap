@@ -1,0 +1,35 @@
+{
+  "name": "geosnap",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "pm2-dev server.js",
+    "compile": "webpack -p --config webpack.config.js --watch"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "babel-cli": "^6.10.1",
+    "babel-core": "^6.10.4",
+    "babel-loader": "^6.2.4",
+    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-react": "^6.11.1",
+    "babel-register": "^6.9.0",
+    "compression": "^1.6.2",
+    "css-loader": "^0.23.1",
+    "eslint": "^3.0.0",
+    "eslint-config-standard": "^5.3.1",
+    "eslint-plugin-standard": "^1.3.2",
+    "express": "^4.14.0",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "mongoose": "^4.5.3",
+    "react": "^15.2.0",
+    "react-dom": "^15.2.0",
+    "react-hot-loader": "^1.3.0",
+    "react-router": "^2.5.2",
+    "webpack": "^1.13.1",
+    "whatwg-fetch": "^1.0.0"
+  }
+}
