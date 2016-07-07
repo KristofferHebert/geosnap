@@ -1,24 +1,25 @@
 import React from 'react'
 import makeRequest from './makeRequest'
 
-const isOnline = React.createClass({
+const Offline = React.createClass({
   getDefaultProps () {
     return {
       offlineMessage: 'This feature is online only.'
     }
   },
-  setInitialState () {
+  getInitialState () {
     return {
       isOnline: true
     }
   },
-  componentWillMount () {
-    this.timer = setInterval(this.checkIfOnline, 2000)
+  componentDidMount () {
+    this.timer = setInterval(this.checkIfOnline, 3000)
   },
   componentWillUnmount () {
     clearInterval(this.timer)
   },
   checkIfOnline () {
+    console.log('checked', navigator.onLine)
     this.setState({ isOnline: navigator.onLine })
   },
   renderOfflineMessage (offlineMessage) {
@@ -29,19 +30,16 @@ const isOnline = React.createClass({
     )
   },
   renderChildren (children, isOnline, offlineMessage) {
-
     const offline = this.renderOfflineMessage(offlineMessage)
     return (isOnline) ? children : offline
-
   },
   render () {
     return (
       <section>
-        {this.renderChildren(this.props.children, this.state.isOnline, this.props.offLineMessage)}
+        {this.renderChildren(this.props.children, this.state.isOnline, this.props.offlineMessage)}
       </section>
     )
   }
 })
 
-
-export default isOnline
+export default Offline
