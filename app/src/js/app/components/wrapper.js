@@ -1,8 +1,29 @@
 import React from 'react'
 import { Link } from 'react-router'
 
+import isLoggedIn from './utils/isloggedin'
+
 const Wrapper = React.createClass({
+  getInitialState () {
+    return {
+      isLoggedIn: true
+    }
+  },
+  componentDidMount () {
+    if (this.isMounted()) {
+      this.setState({isLoggedIn: isLoggedIn()})
+    }
+  },
   renderSignUp (isLoggedIn) {
+    const signUp = (
+      <li><Link activeClassName='active' className='btn' to='/user/signin'>Sign in</Link></li>
+    )
+
+    const signOut = (
+      <li><Link activeClassName='active' className='btn' to='/user/signout'>Sign Out</Link></li>
+    )
+
+    return (isLoggedIn) ? signOut : signUp
 
   },
   render () {
