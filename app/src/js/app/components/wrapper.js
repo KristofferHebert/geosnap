@@ -16,11 +16,11 @@ const Wrapper = React.createClass({
   },
   renderSignUp (isLoggedIn) {
     const signUp = (
-      <li><Link activeClassName='active' className='btn' to='/user/signin'>Sign in</Link></li>
+      <li className='active'><Link activeClassName='active' to='/user/signin'>Sign in</Link></li>
     )
 
     const signOut = (
-      <li><Link activeClassName='active' className='btn' to='/user/signout'>Sign Out</Link></li>
+      <li className='active'><Link activeClassName='active' to='/user/signout'>Sign Out</Link></li>
     )
 
     return (isLoggedIn) ? signOut : signUp
