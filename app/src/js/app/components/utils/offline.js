@@ -19,12 +19,11 @@ const Offline = React.createClass({
     clearInterval(this.timer)
   },
   checkIfOnline () {
-    console.log('checked', navigator.onLine)
     this.setState({ isOnline: navigator.onLine })
   },
   renderOfflineMessage (offlineMessage) {
     return (
-      <div>
+      <div className='bg-info text-center'>
         <p>{offlineMessage}</p>
       </div>
     )

@@ -2,6 +2,9 @@ import React from 'react'
 import { Link } from 'react-router'
 
 const Wrapper = React.createClass({
+  renderSignUp (isLoggedIn) {
+
+  },
   render () {
     return (
       <main>
@@ -13,6 +16,7 @@ const Wrapper = React.createClass({
               </div>
               <ul className='nav navbar-nav navbar-right' role='navigation'>
                 <li><Link activeClassName='active' to='/'>Home</Link></li>
+                {this.renderSignUp(this.state.isLoggedIn)}
               </ul>
             </div>
           </div>
