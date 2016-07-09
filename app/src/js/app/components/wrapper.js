@@ -37,6 +37,7 @@ const Wrapper = React.createClass({
               </div>
               <ul className='nav navbar-nav navbar-right' role='navigation'>
                 <li><Link activeClassName='active' to='/'>Home</Link></li>
+                <li><Link activeClassName='active' to='/snap'>Snap</Link></li>
                 {this.renderSignUp(this.state.isLoggedIn)}
               </ul>
             </div>

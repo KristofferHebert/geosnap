@@ -1,11 +1,20 @@
 import React from 'react'
 
-function handleChange (stateAttribute) {
+function handleChange (stateAttribute, objectPrefix, cbs) {
   return (e) => {
     e.preventDefault()
-    let updatedState = {}
-    updatedState[stateAttribute] = e.target.value
+    let updatedState = (objectPrefix) ? this.state[objectPrefix] : {}
+    let value = e.target.value
+
+    updatedState[stateAttribute] = value
     this.setState(updatedState)
+
+    // if callbacks exists, itterate call callback
+    if (cbs) {
+      cbs.forEach((cb) => {
+        cb(value)
+      })
+    }
   }
 }
 
