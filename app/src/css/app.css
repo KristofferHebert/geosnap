@@ -1,3 +1,10 @@
 .canvas {
   border: 1px solid #e7e7e7;
+  display: block;
+  width: 100%;
+}
+
+.loading {
+  background: url('/images/loading.svg') top 2px right 2px no-repeat #ddd;
+  background-size: 4%;
 }

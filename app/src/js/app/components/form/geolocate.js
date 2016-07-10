@@ -1,18 +1,24 @@
 import React from 'react'
 
 const GeoLocateInput = React.createClass({
-  getInitialState () {
+  getDefaultProps () {
     return {
-      geo: ''
+      geo: {
+        value: '',
+        timestamp: '',
+        placeholder: 'GeoLocate (required)',
+        loading: false
+      }
     }
   },
-  getGeoCoordinates (e) {
-    e.preventDefault()
-
-  },
   render () {
+    var classes = (this.props.geo.loading) ? 'form-control geo-locate loading' : 'form-control geo-locate'
     return (
-      <input type='text' name='geo' ref='geo' value={this.state.geo} className='form-control geo-locate' placeholder='geolocation' onFocus={this.getGeoCoordinates}/>
+      <input type='text' name='geo' ref='geo' value={this.props.geo.value}
+        className={classes} placeholder={this.props.geo.placeholder}
+        onFocus={this.props.getGeoCoordinates}
+        disabled={this.props.geo.value !== '' && this.props.geo.loading === false}
+        required/>
     )
   }
 })
