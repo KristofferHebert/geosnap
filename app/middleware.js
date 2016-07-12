@@ -10,4 +10,6 @@ app.use(express.static('public'))
 app.use(compression())
 app.use(bodyParser.json())
 
+app.set('secret', config.secret)
+
 export default app
