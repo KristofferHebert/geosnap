@@ -1,68 +1,91 @@
 import User from './model'
-import Auth from '../auth'
+import Auth from '../../auth'
 
 const controller = {
   auth (req, res) {
     var email = req.body.email
     var password = req.body.password
 
-    return this.getUserByEmail(id)
+    return controller.getUserByEmail(email)
         .then((user) => {
-          if(!user){
+          if (!user) {
             res.json({
-              success:false,
+              success: false,
               message: 'Please provide valid Email or Password.'
             })
           }
 
-          var validPassword = Auth.validatePassword(password, user.password)
+          var validPassword = Auth.validateHashPassword(password, user.password)
 
-          if(!validatePassword){
+          if (!validPassword) {
             return res.json({
-              success:false,
+              success: false,
               message: 'Please provide valid Email or Password.'
             })
           }
 
+          let token = {
+            _id : user._id,
+            email : user.email
+          }
 
-
+          return res.json({
+            success: true,
+            data: Auth.signJWT(token)
+          })
         })
-        .catch((err)=> {
+        .catch((err) => {
           return res.json({error: err})
         })
   },
-  getUserByEmail(email){
-      var promise = new Promise((resolve, reject) => {
-        return User.findOneByEmail(email, function (err, user) {
-          if (err) {
-            return reject(err)
-          }
-
-          return resolve(user)
+  getUserByEmail (email) {
+    var promise = new Promise((resolve, reject) => {
+      return User.findOne({email: email}, function (err, user) {
+        if (err) {
+          return reject(err)
+        }
+        return resolve(user)
       })
+    })
 
-      return promise
+    return promise
   },
-  getUserById(id){
-      var promise = new Promise((resolve, reject) => {
-        return User.findOneById(id, function (err, user) {
-          if (err) {
-            return reject(err)
-          }
-
-          return resolve(user)
+  getUserById (id) {
+    var promise = new Promise((resolve, reject) => {
+      return User.findByID(id, function (err, user) {
+        if (err) {
+          return reject(err)
+        }
+        return resolve(user)
       })
+    })
+    return promise
+  },
+  post (req, res) {
+    var newUser = {
+      email: req.body.email,
+      name: req.body.name,
+      password: req.body.password
+    }
 
-      return promise
+    User.create(newUser, (err, user) => {
+      if (err) {
+        return res.json({ err: err })
+      }
+      return res.json({
+        success: true,
+        data: user
+      })
+    })
   },
   find (req, res) {
     return User.find(req.body.query, function (err, users) {
       if (err) {
         return res.json({err: err})
       }
-
       return res.json({data: users})
-
-  })
-
+    })
+  }
 }
+
+export default controller

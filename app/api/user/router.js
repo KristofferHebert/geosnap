@@ -4,6 +4,7 @@ import controller from './controller'
 
 const router = express.Router()
 
-router.auth('/upload', controller.auth)
+router.post('/auth', controller.auth)
+router.post('/', controller.post)
 
 export default router

@@ -2,6 +2,7 @@ import express from 'express'
 import path from 'path'
 
 import SnapRouter from './snap/router'
+import UserRouter from './user/router'
 
 const app = express()
 
@@ -10,5 +11,6 @@ app.get('/', (req, res) => {
 })
 
 app.use('/snap', SnapRouter)
+app.use('/user', UserRouter)
 
 export default app

@@ -1,16 +1,20 @@
 import jwt from 'jsonwebtoken'
+import bcrypt from 'bcrypt'
 import config from './config'
 
 // provide auth via webtokens
 const Auth = {
-  sign (payload) {
+  signJWT (payload) {
     return jwt.sign(payload, config.secret)
   },
-  verify (token) {
+  verifyJWT (token) {
     return jwt.verify(token, config.secret)
   },
-  validatePassword (hashPassword, Password) {
-    return true
+  generateHash (password) {
+    return bcrypt.hashSync(password, config.saltLength)
+  },
+  validateHashPassword (password, hashPassword) {
+    return bcrypt.compareSync(password, hashPassword)
   }
 }
 
