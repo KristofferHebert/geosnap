@@ -11,7 +11,7 @@ const HomePage = React.createClass({
       <section>
           <h1>Homepage</h1>
           <Offline>
-            <UserForm type={'signup'} />
+            <UserForm type={'signup'} endpoint={'/user'} />
           </Offline>
       </section>
     )

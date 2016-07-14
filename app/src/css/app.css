@@ -8,3 +8,7 @@
   background: url('/images/loading.svg') top 2px right 2px no-repeat #ddd;
   background-size: 4%;
 }
+
+.padding {
+  padding: 1em;
+}

@@ -3,10 +3,15 @@ import React from 'react'
 function handleChange (stateAttribute, objectPrefix, cbs) {
   return (e) => {
     e.preventDefault()
-    let updatedState = (objectPrefix) ? this.state[objectPrefix] : {}
+    let updatedState = this.state
     let value = e.target.value
 
-    updatedState[stateAttribute] = value
+    if (objectPrefix) {
+      updatedState[objectPrefix][stateAttribute] = value
+    } else {
+      updatedState[stateAttribute] = value
+    }
+
     this.setState(updatedState)
 
     // if callbacks exists, itterate call callback
