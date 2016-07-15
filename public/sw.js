@@ -7,6 +7,9 @@
 const APPNAME = 'geosnap-v1'
 const resourceCache = [
   '//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css',
+  '//cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react.js',
+  '//cdnjs.cloudflare.com/ajax/libs/react-router/2.4.1/ReactRouter.js',
+  '//cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react.js',
   '/js/bundle.min.js'
 ]
 

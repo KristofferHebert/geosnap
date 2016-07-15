@@ -1,13 +1,38 @@
+'use strict'
+
 import React from 'react'
 import { Link } from 'react-router'
-
+import Modal from './modal'
+import Offline from '../components/utils/offline'
+import UserForm from '../components/form/userform'
 import isLoggedIn from './utils/isloggedin'
 
 const Wrapper = React.createClass({
   getInitialState () {
     return {
-      isLoggedIn: true
+      isLoggedIn: true,
+      showModal: false
     }
+  },
+  toggleModal (e) {
+    e.preventDefault()
+    var updatedState = this.state
+    updatedState.showModal = !updatedState.showModal
+    this.setState(updatedState)
+  },
+  renderForm (isLoggedIn) {
+    let SignUp = (
+      <div>
+        <UserForm type={'signup'} endpoint={'/user'} />
+      </div>
+    )
+
+    let SignIn = (
+        <div>
+        </div>
+      )
+
+    return SignIn
   },
   componentDidMount () {
     if (this.isMounted()) {
@@ -16,7 +41,7 @@ const Wrapper = React.createClass({
   },
   renderSignUp (isLoggedIn) {
     const signUp = (
-      <li className='active'><Link activeClassName='active' to='/user/signin'>Sign in</Link></li>
+      <li className='active'><a href='#' onClick={this.toggleModal}>Sign in</a></li>
     )
 
     const signOut = (
@@ -28,7 +53,12 @@ const Wrapper = React.createClass({
   },
   render () {
     return (
-      <main>
+      <section>
+        <Modal showModal={this.state.showModal} toggleModal={this.toggleModal}>
+          <Offline>
+            <UserForm type={'signuin'} endpoint={'/user/auth'} />
+          </Offline>
+        </Modal>
         <nav className='navbar navbar-default' role='banner'>
           <div className='container'>
             <div className='col-md-9 col-md-offset-2'>
@@ -43,7 +73,7 @@ const Wrapper = React.createClass({
             </div>
           </div>
         </nav>
-        <section className='container' role='main'>
+        <section className='container' role='section'>
           <section className='row'>
             <div className='col-md-9 col-md-offset-2'>
               {this.props.children}
@@ -51,7 +81,7 @@ const Wrapper = React.createClass({
           </section>
         </section>
         <footer className='text-center'><p>GeoSnap - 2016</p></footer>
-      </main>
+      </section>
     )
   }
 })

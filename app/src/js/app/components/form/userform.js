@@ -13,7 +13,7 @@ const UserForm = React.createClass({
         email: '',
         password: ''
       },
-      label: this.props.type ? 'Sign up' : 'Sign in',
+      label: this.props.type === 'signup' ? 'Sign up' : 'Sign in',
       message: {
         value: '',
         className: ''
@@ -62,12 +62,13 @@ const UserForm = React.createClass({
           }
         }
 
-        return self.setState({
+        self.setState({
           message: {
-            value: 'Successfully signed up',
+            value: (this.props.type === 'signup') ? 'Successfully signed up' : 'Signing in...',
             className: 'padding bg-success'
           }
         })
+
         console.log(response)
       })
       .catch((err) => {

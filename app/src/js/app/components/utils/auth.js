@@ -1,5 +1,7 @@
 // Helper function to get current user after authenticating
 const Auth = {}
+// sets root for localStorage
+const base = 'geosnap'
 
 // Fetch user id
 Auth.getId = function () {
@@ -15,21 +17,21 @@ Auth.getToken = function () {
 
 // Fetch user data from localStorage
 Auth.getUser = function () {
-  var user = localStorage.getItem('user')
+  var user = localStorage.getItem(base)
   if (user) return JSON.parse(user)
   return false
 }
 
 Auth.logoutUser = function () {
   if (Auth.getUser()) {
-    delete localStorage.user
+    delete localStorage[base]
   }
 }
 
-// Used to populate localStorage.user with user data.
+// Used to populate localStorage[base].user with user data.
 Auth.setUser = function (json) {
   var user = JSON.stringify(json)
-  localStorage.setItem('user', user)
+  localStorage[base].setItem('user', user)
   return user
 }
 

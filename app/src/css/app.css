@@ -12,3 +12,7 @@
 .padding {
   padding: 1em;
 }
+
+.modal {
+    background: rgba(0,0,0,.7);
+}

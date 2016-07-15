@@ -24,14 +24,13 @@ const controller = {
             })
           }
 
-          let token = {
-            _id : user._id,
-            email : user.email
+          let data = {
+            token: Auth.signJWT({id: user._id})
           }
 
           return res.json({
             success: true,
-            data: Auth.signJWT(token)
+            data: data
           })
         })
         .catch((err) => {
