@@ -4,7 +4,7 @@ function renderMessage (message) {
   }
   return (
     <div className={message.className}>
-      <p>{message.value}</p>
+      {message.value}
     </div>
   )
 }

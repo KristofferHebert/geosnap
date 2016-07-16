@@ -25,7 +25,8 @@ const controller = {
           }
 
           let data = {
-            token: Auth.signJWT({id: user._id})
+            token: Auth.signJWT({id: user._id}),
+            _id: user._id
           }
 
           return res.json({

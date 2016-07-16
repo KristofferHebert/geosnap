@@ -2,6 +2,7 @@ import React from 'react'
 import makeRequest from '../utils/makerequest'
 import handleChange from '../utils/handleChange'
 import renderMessage from '../utils/renderMessage'
+import Auth from '../utils/auth'
 
 const UserForm = React.createClass({
   renderMessage,
@@ -62,14 +63,25 @@ const UserForm = React.createClass({
           }
         }
 
-        self.setState({
-          message: {
-            value: (this.props.type === 'signup') ? 'Successfully signed up' : 'Signing in...',
-            className: 'padding bg-success'
-          }
-        })
+        if (!response.success) {
+          return self.setState({
+            message: {
+              value: response.message,
+              className: 'padding bg-danger'
+            }
+          })
+        }
 
-        console.log(response)
+        if (response.success) {
+          Auth.setUser(response.data.token, response.data._id)
+
+          return self.setState({
+            message: {
+              value: (this.props.type === 'signup') ? 'Successfully signed up' : 'Signing in...',
+              className: 'padding bg-success'
+            }
+          })
+        }
       })
       .catch((err) => {
         console.log(err)

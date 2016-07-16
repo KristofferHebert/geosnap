@@ -5,7 +5,7 @@ import { Link } from 'react-router'
 import Modal from './modal'
 import Offline from '../components/utils/offline'
 import UserForm from '../components/form/userform'
-import isLoggedIn from './utils/isloggedin'
+import Auth from '../components/utils/auth'
 
 const Wrapper = React.createClass({
   getInitialState () {
@@ -20,24 +20,15 @@ const Wrapper = React.createClass({
     updatedState.showModal = !updatedState.showModal
     this.setState(updatedState)
   },
-  renderForm (isLoggedIn) {
-    let SignUp = (
-      <div>
-        <UserForm type={'signup'} endpoint={'/user'} />
-      </div>
-    )
-
-    let SignIn = (
-        <div>
-        </div>
-      )
-
-    return SignIn
-  },
   componentDidMount () {
     if (this.isMounted()) {
-      this.setState({isLoggedIn: isLoggedIn()})
+      this.setState({isLoggedIn: Auth.isLoggedIn()})
     }
+  },
+  logout (e) {
+    e.preventDefault()
+    Auth.logoutUser()
+    this.setState({isLoggedIn: false})
   },
   renderSignUp (isLoggedIn) {
     const signUp = (
@@ -45,7 +36,7 @@ const Wrapper = React.createClass({
     )
 
     const signOut = (
-      <li className='active'><Link activeClassName='active' to='/user/signout'>Sign Out</Link></li>
+      <li className='active'><a href='#' onClick={this.logout}>Sign Out</a></li>
     )
 
     return (isLoggedIn) ? signOut : signUp
@@ -56,7 +47,7 @@ const Wrapper = React.createClass({
       <section>
         <Modal showModal={this.state.showModal} toggleModal={this.toggleModal}>
           <Offline>
-            <UserForm type={'signuin'} endpoint={'/user/auth'} />
+            <UserForm type={'signin'} endpoint={'/user/auth'} />
           </Offline>
         </Modal>
         <nav className='navbar navbar-default' role='banner'>
