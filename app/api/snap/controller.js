@@ -6,14 +6,32 @@ const controller = {
     let image = req.body.image
     let owner = req.body.owner
     let timestamp = req.body.timestamp
+    let coordinates = req.body.coordinates
+    let filename = owner + '-' + timestamp + '.jpg'
 
     const regex = /^data:.+\/(.+);base64,(.*)$/
 
     let matches = image.match(regex)
     const data = matches[2]
     const buffer = new Buffer(data, 'base64')
-    fs.writeFileSync(path.resolve(__dirname, '../../../public/images/upload') + '/' + owner + '-' + timestamp + '.jpg', buffer)
-    res.send({success:'success'})
+    fs.writeFileSync(path.resolve(__dirname, '../../../public/images/upload') + '/' + filename, buffer)
+
+    var newSnap = {
+      owner: owner,
+      geometry: { coordinates: [coordinates.lat, coordinates.long] },
+      filename: filename
+    }
+
+    Snap.create(newSnap, (err, snap) => {
+      if (err) {
+        return res.send({success:false, error: err})
+      }
+
+      return res.send({
+        success: true,
+        data: snap
+      })
+    })
   },
 
   example (req, res) {

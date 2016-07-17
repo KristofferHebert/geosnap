@@ -25,7 +25,9 @@ const SnapList = React.createClass({
     })
   },
   closeModal (e) {
-    e.preventDefault()
+    if (e) {
+      e.preventDefault()
+    }
     this.setState({
       showModal: false
     })
@@ -47,9 +49,9 @@ const SnapList = React.createClass({
     const current = snaps[currentImage].filename
 
     return (
-      <div>
+      <a href='#' onClick={this.closeModal}>
         <img src={'/images/upload/' + current} className='img-responsive' />
-      </div>
+      </a>
     )
   },
   renderSnapList (snaps) {
@@ -58,8 +60,10 @@ const SnapList = React.createClass({
     }
     return snaps.map((snap, i) => {
       return (
-        <li key={Date.now()} className='col-sm-4'>
-          <img src={'/images/upload/' + snap.filename} className='img-responsive' onClick={this.openModal(i)}/>
+        <li key={Date.now() + i} className='col-sm-4'>
+          <a href='#' onClick={this.openModal(i)}>
+            <img src={'/images/upload/' + snap.filename} className='img-responsive' />
+          </a>
         </li>
       )
     })
