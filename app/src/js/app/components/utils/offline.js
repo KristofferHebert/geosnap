@@ -22,11 +22,12 @@ const Offline = React.createClass({
     this.setState({ isOnline: navigator.onLine })
   },
   renderOfflineMessage (offlineMessage) {
-    return (
+    const message = (
       <div className='bg-info text-center'>
         <p>{offlineMessage}</p>
       </div>
     )
+    return (offlineMessage) ? offlineMessage : null
   },
   renderChildren (children, isOnline, offlineMessage) {
     const offline = this.renderOfflineMessage(offlineMessage)

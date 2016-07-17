@@ -15,10 +15,15 @@ const Wrapper = React.createClass({
     }
   },
   toggleModal (e) {
-    e.preventDefault()
-    var updatedState = this.state
+    if (e) {
+      e.preventDefault()
+    }
+    const updatedState = this.state
     updatedState.showModal = !updatedState.showModal
     this.setState(updatedState)
+  },
+  handleSignupSuccess () {
+    this.setState({isLoggedIn: true})
   },
   componentDidMount () {
     if (this.isMounted()) {
@@ -47,7 +52,10 @@ const Wrapper = React.createClass({
       <section>
         <Modal showModal={this.state.showModal} toggleModal={this.toggleModal}>
           <Offline>
-            <UserForm type={'signin'} endpoint={'/user/auth'} />
+            <UserForm type={'signin'} endpoint={'/user/auth'}
+              toggleModal={this.toggleModal}
+              handleSuccess={this.handleSignupSuccess}
+              successRedirect='/#/snap'/>
           </Offline>
         </Modal>
         <nav className='navbar navbar-default' role='banner'>
@@ -57,7 +65,7 @@ const Wrapper = React.createClass({
                 <a href='/' className='navbar-brand'>GeoSnap</a>
               </div>
               <ul className='nav navbar-nav navbar-right' role='navigation'>
-                <li><Link activeClassName='active' to='/'>Home</Link></li>
+                <li><Link activeClassName='active' to='/'>Feed</Link></li>
                 <li><Link activeClassName='active' to='/snap'>Snap</Link></li>
                 {this.renderSignUp(this.state.isLoggedIn)}
               </ul>

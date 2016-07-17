@@ -21,6 +21,20 @@ const UserForm = React.createClass({
       }
     }
   },
+  resetForm () {
+    this.setState({
+      form: {
+        name: '',
+        email: '',
+        password: ''
+      },
+      label: this.props.type === 'signup' ? 'Sign up' : 'Sign in',
+      message: {
+        value: '',
+        className: ''
+      }
+    })
+  },
   renderNameInput (type) {
     let nameInput = (
       <div className='form-group'>
@@ -73,14 +87,26 @@ const UserForm = React.createClass({
         }
 
         if (response.success) {
-          Auth.setUser(response.data.token, response.data._id)
 
-          return self.setState({
+          Auth.setUser(response.data.token, response.data._id)
+          self.setState({
             message: {
               value: (this.props.type === 'signup') ? 'Successfully signed up' : 'Signing in...',
               className: 'padding bg-success'
             }
           })
+          if (self.props.toggleModal) {
+            self.props.toggleModal()
+          }
+          if (self.props.handleSuccess) {
+            self.props.handleSuccess()
+          }
+          if (self.props.successRedirect) {
+            self.resetForm()
+            window.location = self.props.successRedirect
+          } else {
+            self.resetForm()
+          }
         }
       })
       .catch((err) => {
@@ -90,20 +116,20 @@ const UserForm = React.createClass({
   renderForm (type) {
     return (
       <div>
-        <div className='form-group'>
-          {this.renderHeader(this.props.type)}
-          <label className='sr-only' for='email'>Email address</label>
-          <input type='email' className='form-control' id='email'
-            value={this.state.form.email} placeholder='Email' onChange={this.handleChange('email', 'form')} required />
-       </div>
-       {this.renderNameInput(type)}
-       <div className='form-group'>
-         <label className='sr-only' for='password'>Password</label>
-           <input type='password' className='form-control' id='password'
+      <div className='form-group'>
+        {this.renderHeader(this.props.type)}
+        <label className='sr-only' for='email'>Email address</label>
+        <input type='email' className='form-control' id='email'
+          value={this.state.form.email} placeholder='Email' onChange={this.handleChange('email', 'form')} required />
+      </div>
+      {this.renderNameInput(type)}
+      <div className='form-group'>
+        <label className='sr-only' for='password'>Password</label>
+          <input type='password' className='form-control' id='password'
              value={this.state.form.password} placeholder='Password' onChange={this.handleChange('password', 'form')} required />
-       </div>
-       <div className='checkbox'>
-         <button type='submit' className='btn btn-primary'>{this.state.label}</button>
+      </div>
+      <div className='checkbox'>
+          <button type='submit' className='btn btn-primary'>{this.state.label}</button>
       </div>
      </div>
     )

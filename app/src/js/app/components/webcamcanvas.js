@@ -1,6 +1,7 @@
 import React from 'react'
 import handleChange from './utils/handleChange'
 import makeRequest from './utils/makeRequest'
+import Auth from './utils/auth'
 import getUserMedia from './utils/getUserMedia'
 import GeoLocateInput from './form/geolocate'
 
@@ -81,7 +82,7 @@ const WebCamCanvas = React.createClass({
         lat: coords[0],
         long: coords[1]
       },
-      userId: null
+      owner: Auth.getCurrentUser()
     }
 
     let options = {

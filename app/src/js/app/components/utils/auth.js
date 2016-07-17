@@ -31,7 +31,7 @@ Auth.getToken = function () {
 
 // Fetch user data from localStorage
 Auth.getUser = function () {
-  var geosnap = 'geosnap_' + localStorage['currentUser']
+  var geosnap = 'geosnap_' + Auth.getCurrentUser()
   var user = localStorage[geosnap]
   return (user) ? JSON.parse(user) : false
 }
