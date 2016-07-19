@@ -36,6 +36,12 @@ Auth.getUser = function () {
   return (user) ? JSON.parse(user) : false
 }
 
+Auth.getUserById = function (id) {
+  var base = 'geosnap_' + id
+  var user = localStorage[base]
+  return (user) ? user : false
+}
+
 Auth.logoutUser = function () {
   if (Auth.getUser()) {
     delete localStorage['currentUser']
