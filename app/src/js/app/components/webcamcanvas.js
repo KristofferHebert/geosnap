@@ -2,11 +2,12 @@ import React from 'react'
 import handleChange from './utils/handleChange'
 import makeRequest from './utils/makeRequest'
 import Auth from './utils/auth'
+import OfflineSave from './utils/offlinesave'
+
 import getUserMedia from './utils/getUserMedia'
 import GeoLocateInput from './form/geolocate'
 
 // some inspiration from http://www.purplesquirrels.com.au/2013/08/webcam-to-canvas-or-data-uri-with-html5-and-javascript/
-
 const WebCamCanvas = React.createClass({
   getInitialState () {
     return {
@@ -73,8 +74,6 @@ const WebCamCanvas = React.createClass({
 
     let coords = geo.value.split(',')
 
-
-
     let postRequest = {
       image: image,
       timestamp: geo.timestamp,
@@ -84,7 +83,14 @@ const WebCamCanvas = React.createClass({
       },
       owner: Auth.getCurrentUser()
     }
+    postRequest = JSON.stringify(postRequest)
 
+    // If offline, save to localStorage
+    if (!navigator.isOnline) {
+      return OfflineSave.save(postRequest)
+    }
+
+    // If online, save to server
     let options = {
       headers: {
         'Accept': 'application/json',

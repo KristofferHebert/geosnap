@@ -6,6 +6,7 @@ import Modal from './modal'
 import Offline from '../components/utils/offline'
 import UserForm from '../components/form/userform'
 import Auth from '../components/utils/auth'
+import OfflineSave from './utils/offlinesave'
 
 const Wrapper = React.createClass({
   getInitialState () {
@@ -13,6 +14,11 @@ const Wrapper = React.createClass({
       isLoggedIn: true,
       showModal: false
     }
+  },
+  pollOfflineData () {
+    this.timer = setInterval(() => {
+      OfflineSave.checkForOfflineData(Auth.getCurrentUser(), '/snap/', navigator.isOnline)
+    }, 5000)
   },
   toggleModal (e) {
     if (e) {
@@ -27,6 +33,7 @@ const Wrapper = React.createClass({
   },
   componentDidMount () {
     if (this.isMounted()) {
+      this.pollOfflineData()
       this.setState({isLoggedIn: Auth.isLoggedIn()})
     }
   },

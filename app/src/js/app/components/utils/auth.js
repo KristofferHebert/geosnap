@@ -39,7 +39,7 @@ Auth.getUser = function () {
 Auth.getUserById = function (id) {
   var base = 'geosnap_' + id
   var user = localStorage[base]
-  return (user) ? user : false
+  return (user) ? JSON.parse(user) : false
 }
 
 Auth.logoutUser = function () {
@@ -69,7 +69,7 @@ Auth.setCurrentUser = function (id) {
 
 Auth.getCurrentUser = function () {
   var user = localStorage['currentUser']
-  return (user) ? user : false
+  return (user) ? user : 'geosnap_temp'
 }
 // Check if user is logged in
 Auth.isLoggedIn = function () {

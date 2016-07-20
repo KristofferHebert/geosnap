@@ -12,20 +12,17 @@
 // if fail give error and leave in localStorage
 // log failure
 
-import Auth from 'auth'
+import Auth from './auth'
 import makeRequest from './makerequest'
 
 const OfflineSave = {}
 
-OfflineSave.save = function (id, data) {
-  var user = Auth.getUserById(id)
-  var base = 'geosnap_' + id
-  if (!user) {
-    return false
-  }
+OfflineSave.save = function (data) {
+  var base = Auth.getCurrentUser()
+  var user = Auth.getUserById(base)
+  base = 'geosnap_' + base
 
-  user = JSON.parse(user)
-  if (Array.isArray(user.data)) {
+  if (!Array.isArray(user.data)) {
     user.data = []
   }
 
@@ -36,7 +33,7 @@ OfflineSave.save = function (id, data) {
 }
 
 OfflineSave.sync = function (userData, endpoint) {
-  if (userData.length === 0) {
+  if (!Array.isArray(user.data)) {
     return false
   }
   userData.forEach((data, i) => {
@@ -62,6 +59,22 @@ OfflineSave.sync = function (userData, endpoint) {
 
     return userData
   })
+}
+
+OfflineSave.checkForOfflineData = function (userID, endpoint, isOnline) {
+
+  if (!isOnline) {
+    return false
+  }
+
+  var user = Auth.getUser()
+
+  if (user.data) {
+    user.data = OfflineSave.sync(user.data, endpoint)
+  }
+
+  return false
+
 }
 
 export default OfflineSave
