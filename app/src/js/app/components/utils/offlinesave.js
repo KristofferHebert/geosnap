@@ -18,10 +18,8 @@ import makeRequest from './makerequest'
 const OfflineSave = {}
 
 OfflineSave.save = function (id, data) {
-
   var user = Auth.getUserById(id)
   var base = 'geosnap_' + id
-  var user = localStorage[base]
   if (!user) {
     return false
   }
@@ -35,16 +33,13 @@ OfflineSave.save = function (id, data) {
 
   user = JSON.stringify(user)
   localStorage[base] = user
-
 }
 
 OfflineSave.sync = function (userData, endpoint) {
   if (userData.length === 0) {
     return false
   }
-
-
-  userData.forEach((data) => {
+  userData.forEach((data, i) => {
     let request = {
       headers: {
         'Accept': 'application/json',
@@ -53,9 +48,20 @@ OfflineSave.sync = function (userData, endpoint) {
       method: 'POST',
       body: JSON.stringify(data)
     }
-    makeRequest('endpoint', request)
-  })
+    makeRequest(endpoint, request)
+      .then((response) => {
+        if (!response.success) {
+          console.log('data sync failed at index:', i)
+        }
+        userData.splice(i, 1)
+        console.log('data syncd at index:', i)
+      })
+      .catch((e) => {
+        console.log('data error during sync index:', i, e)
+      })
 
+    return userData
+  })
 }
 
 export default OfflineSave
