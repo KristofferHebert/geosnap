@@ -22,41 +22,48 @@ const WebCamCanvas = React.createClass({
   },
   getUserMedia,
   handleChange,
-  getCurrentPosition (options) {
-    let self = this
-    const defaultOptions = {
-      enableHighAccuracy: true,
-      timeout: 5000,
-      maximumAge: 0
-    }
-
-    const opts = options || defaultOptions
-
-    if (navigator.geolocation) {
-      self.setState({
+  getCurrentPosition (isOnline) {
+    if (isOnline) {
+      return this.setState({
         geo: {
-          placeholder: 'Loading...',
-          loading: true
+          value: '47.86, -122.22',
+          timestamp: Date.now(),
+          loading: false
         }
       })
-      navigator.geolocation.getCurrentPosition((result) => {
+    } else {
+      let self = this
+      const opts = {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 0
+      }
+
+      if (navigator.geolocation) {
         self.setState({
           geo: {
-            value: result.coords.latitude.toFixed(2) + ', ' + result.coords.longitude.toFixed(2),
-            timestamp: result.timestamp,
-            loading: false
+            placeholder: 'Loading...',
+            loading: true
           }
         })
-      }, (err) => {
-        console.log(err)
-      }, opts)
-    } else {
-      console.log('Geolocation is unavailable for this browser.')
+        navigator.geolocation.getCurrentPosition((result) => {
+          self.setState({
+            geo: {
+              value: result.coords.latitude.toFixed(2) + ', ' + result.coords.longitude.toFixed(2),
+              timestamp: result.timestamp,
+              loading: false
+            }
+          })
+        }, (err) => {
+          console.log(err)
+        }, opts)
+      } else {
+        console.log('Geolocation is unavailable for this browser.')
+      }
     }
   },
-  getGeoCoordinates (e) {
-    e.preventDefault()
-    this.getCurrentPosition()
+  getGeoCoordinates () {
+    this.getCurrentPosition(navigator.isOnline)
   },
   componentDidMount () {
     this.renderVideo()
@@ -88,25 +95,26 @@ const WebCamCanvas = React.createClass({
     // If offline, save to localStorage
     if (!navigator.isOnline) {
       return OfflineSave.save(postRequest)
+    } else {
+      // If online, save to server
+      let options = {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        method: 'POST',
+        body: JSON.stringify(postRequest)
+      }
+
+      makeRequest('/snap/upload', options)
+      .then((response) => {
+        console.log(response)
+      })
+      .catch((e) => {
+        console.log(e)
+      })
     }
 
-    // If online, save to server
-    let options = {
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      method: 'POST',
-      body: JSON.stringify(postRequest)
-    }
-
-    makeRequest('/snap/upload', options)
-    .then((response) => {
-      console.log(response)
-    })
-    .catch((e) => {
-      console.log(e)
-    })
   },
   handleVideo (stream) {
     const self = this

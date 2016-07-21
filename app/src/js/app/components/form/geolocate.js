@@ -1,6 +1,11 @@
 import React from 'react'
 
 const GeoLocateInput = React.createClass({
+  componentDidMount () {
+    if (this.props.getGeoCoordinates) {
+      this.props.getGeoCoordinates(false)
+    }
+  },
   getDefaultProps () {
     return {
       geo: {
@@ -16,7 +21,6 @@ const GeoLocateInput = React.createClass({
     return (
       <input type='text' name='geo' ref='geo' value={this.props.geo.value}
         className={classes} placeholder={this.props.geo.placeholder}
-        onFocus={this.props.getGeoCoordinates}
         disabled={this.props.geo.value !== '' && this.props.geo.loading === false}
         required/>
     )
