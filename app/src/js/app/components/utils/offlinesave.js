@@ -33,10 +33,10 @@ OfflineSave.save = function (data) {
 }
 
 OfflineSave.sync = function (userData, endpoint) {
-  if (!Array.isArray(user.data)) {
+  if (!Array.isArray(userData)) {
     return false
   }
-  userData.forEach((data, i) => {
+  userData = userData.map((data, i) => {
     let request = {
       headers: {
         'Accept': 'application/json',
@@ -45,20 +45,11 @@ OfflineSave.sync = function (userData, endpoint) {
       method: 'POST',
       body: JSON.stringify(data)
     }
-    makeRequest(endpoint, request)
-      .then((response) => {
-        if (!response.success) {
-          console.log('data sync failed at index:', i)
-        }
-        userData.splice(i, 1)
-        console.log('data syncd at index:', i)
-      })
-      .catch((e) => {
-        console.log('data error during sync index:', i, e)
-      })
-
-    return userData
+    return makeRequest(endpoint, request)
   })
+
+  return Promise.all(userData)
+
 }
 
 OfflineSave.checkForOfflineData = function (userID, endpoint, isOnline) {
@@ -66,11 +57,19 @@ OfflineSave.checkForOfflineData = function (userID, endpoint, isOnline) {
   if (!isOnline) {
     return false
   }
-
+  var base = Auth.getCurrentUser()
   var user = Auth.getUser()
 
   if (user.data) {
-    user.data = OfflineSave.sync(user.data, endpoint)
+    OfflineSave.sync(user.data, endpoint).
+    .then((userData) => {
+      user.data = userData
+      localStorage[base] = JSON.stringify(user)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+
   }
 
   return false
