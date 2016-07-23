@@ -1,7 +1,7 @@
 import React from 'react'
 
 const GeoLocateInput = React.createClass({
-  componentDidMount () {
+  componentWillMount () {
     if (this.props.getGeoCoordinates) {
       this.props.getGeoCoordinates(false)
     }

@@ -19,15 +19,16 @@ const OfflineSave = {}
 
 OfflineSave.save = function (data) {
   var base = Auth.getCurrentUser()
-  var user = Auth.getUserById(base)
-  base = 'geosnap_' + base
+  if (base.indexOf('geosnap_') === -1) {
+    base = 'geosnap_' + base
+  }
+  var user = Auth.getUser(base) || {}
 
   if (!Array.isArray(user.data)) {
     user.data = []
   }
 
   user.data.push(data)
-
   user = JSON.stringify(user)
   localStorage[base] = user
 }
@@ -43,8 +44,11 @@ OfflineSave.sync = function (userData, endpoint) {
         'Content-Type': 'application/json'
       },
       method: 'POST',
-      body: JSON.stringify(data)
+      body: data
     }
+
+    debugger
+
     return makeRequest(endpoint, request)
   })
 
@@ -58,12 +62,16 @@ OfflineSave.checkForOfflineData = function (userID, endpoint, isOnline) {
     return false
   }
   var base = Auth.getCurrentUser()
+  if (base.indexOf('geosnap_') === -1) {
+    base = 'geosnap_' + base
+  }
   var user = Auth.getUser()
 
   if (user.data) {
-    OfflineSave.sync(user.data, endpoint).
+    OfflineSave.sync(user.data, endpoint)
     .then((userData) => {
-      user.data = userData
+      console.log('successfully synced')
+      delete user.data
       localStorage[base] = JSON.stringify(user)
     })
     .catch((err) => {

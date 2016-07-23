@@ -60,7 +60,7 @@ const SnapList = React.createClass({
     }
     return snaps.map((snap, i) => {
       return (
-        <li key={Date.now() + i} className='col-sm-4'>
+        <li key={Date.now() + i} className='col-sm-4' tabIndex={i + 4}>
           <a href='#' onClick={this.openModal(i)}>
             <img src={'/images/upload/' + snap.filename} className='img-responsive' />
           </a>

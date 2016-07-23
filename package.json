@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "pm2-dev server.js",
-    "compile": "webpack -p --config webpack.config.js --watch"
+    "compile": "webpack --config webpack.config.js --watch",
+    "dist": "webpack -p --config webpack.config.js"
   },
   "author": "",
   "license": "ISC",

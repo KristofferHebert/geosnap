@@ -40,7 +40,7 @@ const UserForm = React.createClass({
       <div className='form-group'>
        <label className='sr-only' for='input'>Name</label>
        <input type='name' className='form-control' id='name'
-         value={this.state.form.name} placeholder='Name' onChange={this.handleChange('name', 'form')} required />
+         value={this.state.form.name} placeholder='Name' onChange={this.handleChange('name', 'form')} required tabIndex={31}/>
      </div>
     )
     return (type === 'signup') ? nameInput : null
@@ -120,16 +120,16 @@ const UserForm = React.createClass({
         {this.renderHeader(this.props.type)}
         <label className='sr-only' for='email'>Email address</label>
         <input type='email' className='form-control' id='email'
-          value={this.state.form.email} placeholder='Email' onChange={this.handleChange('email', 'form')} required />
+          value={this.state.form.email} placeholder='Email' onChange={this.handleChange('email', 'form')} required tabIndex={30}/>
       </div>
       {this.renderNameInput(type)}
       <div className='form-group'>
         <label className='sr-only' for='password'>Password</label>
           <input type='password' className='form-control' id='password'
-             value={this.state.form.password} placeholder='Password' onChange={this.handleChange('password', 'form')} required />
+             value={this.state.form.password} placeholder='Password' onChange={this.handleChange('password', 'form')} required tabIndex={32}/>
       </div>
       <div className='checkbox'>
-          <button type='submit' className='btn btn-primary'>{this.state.label}</button>
+          <button type='submit' className='btn btn-primary' tabIndex={33}>{this.state.label}</button>
       </div>
      </div>
     )

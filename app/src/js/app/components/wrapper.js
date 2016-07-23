@@ -17,7 +17,7 @@ const Wrapper = React.createClass({
   },
   pollOfflineData () {
     this.timer = setInterval(() => {
-      OfflineSave.checkForOfflineData(Auth.getCurrentUser(), '/snap/', navigator.isOnline)
+      OfflineSave.checkForOfflineData(Auth.getCurrentUser(), '/snap/upload', navigator.onLine)
     }, 5000)
   },
   toggleModal (e) {
@@ -69,11 +69,11 @@ const Wrapper = React.createClass({
           <div className='container'>
             <div className='col-md-9 col-md-offset-2'>
               <div className='navbar-header'>
-                <a href='/' className='navbar-brand'>GeoSnap</a>
+                <a href='/' className='navbar-brand' tabIndex={1}>GeoSnap</a>
               </div>
               <ul className='nav navbar-nav navbar-right' role='navigation'>
-                <li><Link activeClassName='active' to='/'>Feed</Link></li>
-                <li><Link activeClassName='active' to='/snap'>Snap</Link></li>
+                <li><Link activeClassName='active' to='/' tabIndex={2}>Feed</Link></li>
+                <li><Link activeClassName='active' to='/snap' tabIndex={3}>Snap</Link></li>
                 {this.renderSignUp(this.state.isLoggedIn)}
               </ul>
             </div>

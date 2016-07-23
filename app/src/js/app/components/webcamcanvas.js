@@ -17,6 +17,10 @@ const WebCamCanvas = React.createClass({
         timestamp: '',
         placeholder: 'GeoLocate (required)',
         loading: false
+      },
+      message: {
+        value: false,
+        className: 'bg-success'
       }
     }
   },
@@ -63,7 +67,7 @@ const WebCamCanvas = React.createClass({
     }
   },
   getGeoCoordinates () {
-    this.getCurrentPosition(navigator.isOnline)
+    this.getCurrentPosition(navigator.onLine)
   },
   componentDidMount () {
     this.renderVideo()
@@ -80,7 +84,7 @@ const WebCamCanvas = React.createClass({
     let geo = this.state.geo
 
     let coords = geo.value.split(',')
-
+    let self = this
     let postRequest = {
       image: image,
       timestamp: geo.timestamp,
@@ -93,7 +97,7 @@ const WebCamCanvas = React.createClass({
     postRequest = JSON.stringify(postRequest)
 
     // If offline, save to localStorage
-    if (!navigator.isOnline) {
+    if (!navigator.onLine) {
       return OfflineSave.save(postRequest)
     } else {
       // If online, save to server
@@ -103,12 +107,18 @@ const WebCamCanvas = React.createClass({
           'Content-Type': 'application/json'
         },
         method: 'POST',
-        body: JSON.stringify(postRequest)
+        body: postRequest
       }
 
       makeRequest('/snap/upload', options)
       .then((response) => {
         console.log(response)
+        self.setState({
+          message: {
+            value: 'Snap saved succesfully.',
+            className: 'bg-success'
+          }
+        })
       })
       .catch((e) => {
         console.log(e)
@@ -168,6 +178,9 @@ const WebCamCanvas = React.createClass({
           </div>
           <div className='form-group'>
             <input type='submit' className='btn btn-primary btn-block' value='Save' />
+          </div>
+          <div hidden={this.state.message.value === false} className={'padding text-center ' + this.state.message.className}>
+            <p>{this.state.message.value}</p>
           </div>
       </form>
     )
