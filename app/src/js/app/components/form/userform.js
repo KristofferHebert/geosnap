@@ -114,19 +114,20 @@ const UserForm = React.createClass({
       })
   },
   renderForm (type) {
+
     return (
       <div>
       <div className='form-group'>
         {this.renderHeader(this.props.type)}
-        <label className='sr-only' for='email'>Email address</label>
-        <input type='email' className='form-control' id='email'
-          value={this.state.form.email} placeholder='Email' onChange={this.handleChange('email', 'form')} required tabIndex={30}/>
+        <label className='email' for='email'>Email address</label>
+        <input type='email' name='email' className='form-control' id='email'
+          value={this.state.form.email} placeholder='Email' onChange={this.handleChange('email', 'form')} required tabIndex={30} autocomplete={true}/>
       </div>
       {this.renderNameInput(type)}
       <div className='form-group'>
-        <label className='sr-only' for='password'>Password</label>
-          <input type='password' className='form-control' id='password'
-             value={this.state.form.password} placeholder='Password' onChange={this.handleChange('password', 'form')} required tabIndex={32}/>
+        <label className='password' for='password'>Password</label>
+          <input type='password' name='password' className='form-control' id='password'
+             value={this.state.form.password} placeholder='Password' onChange={this.handleChange('password', 'form')} required tabIndex={32} autocomplete={true}/>
       </div>
       <div className='checkbox'>
           <button type='submit' className='btn btn-primary' tabIndex={33}>{this.state.label}</button>

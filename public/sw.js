@@ -11,6 +11,7 @@ const resourceCache = [
   '//cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react-dom.js',
   '//cdnjs.cloudflare.com/ajax/libs/react-router/2.4.1/ReactRouter.js',
   '//fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic',
+  'manifest.json',
   '/js/bundle.min.js'
 ]
 
