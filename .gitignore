@@ -6,3 +6,5 @@ config.js
 dump
 dump/*
 *.zip
+*.csr
+*.key
