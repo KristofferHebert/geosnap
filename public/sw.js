@@ -31,11 +31,20 @@ this.addEventListener('install', (event) => {
 
 // Cache Requests
 this.addEventListener('fetch', (event) => {
-  console.log('event', event.request)
+  if (event.request.method === 'POST') {
+    // ignore post requests
+    return fetch(event.request)
+    .then((response) => {
+      return response
+    })
+    .catch((err) => {
+      console.log('Post request failed:', err)
+    })
+  }
+
   event.respondWith(
     caches.match(event.request)
     .then(function (response) {
-      console.log('response', response)
         // If cached request found - return cache
       if (response) {
         console.log('Using cached response')

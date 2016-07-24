@@ -21,7 +21,8 @@ const WebCamCanvas = React.createClass({
       message: {
         value: false,
         className: 'bg-success'
-      }
+      },
+      showSave: true
     }
   },
   getUserMedia,
@@ -79,6 +80,10 @@ const WebCamCanvas = React.createClass({
   },
   handleSubmit (e) {
     e.preventDefault()
+    // toggle submit button
+    this.setState({
+      showSave: false
+    })
     let canvas = this.refs.webcamcanvas
     let image = canvas.toDataURL('image/jpeg', 0.5)
     let geo = this.state.geo
@@ -98,6 +103,13 @@ const WebCamCanvas = React.createClass({
 
     // If offline, save to localStorage
     if (!navigator.onLine) {
+      self.setState({
+        message: {
+          value: 'Snap saved successfully. It will be uploaded when you have internet connection.',
+          className: 'bg-success'
+        },
+        showSave: true
+      })
       return OfflineSave.save(postRequest)
     } else {
       // If online, save to server
@@ -115,8 +127,9 @@ const WebCamCanvas = React.createClass({
         console.log(response)
         self.setState({
           message: {
-            value: 'Snap saved succesfully.',
-            className: 'bg-success'
+            value: 'Snap saved successfully.',
+            className: 'bg-success',
+            showSave: true
           }
         })
       })
@@ -177,7 +190,7 @@ const WebCamCanvas = React.createClass({
               placeholder='Caption (Max 50 characters)' maxLength ='50' onChange={this.handleChange('caption')} rows='4' cols='50' />
           </div>
           <div className='form-group'>
-            <input type='submit' className='btn btn-primary btn-block' value='Save' />
+            <input type='submit' className='btn btn-primary btn-block' value='Save' disable={!this.state.showSave}/>
           </div>
           <div hidden={this.state.message.value === false} className={'padding text-center ' + this.state.message.className}>
             <p>{this.state.message.value}</p>

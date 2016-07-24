@@ -2,11 +2,6 @@ import React from 'react'
 import makeRequest from './makeRequest'
 
 const Offline = React.createClass({
-  getDefaultProps () {
-    return {
-      offlineMessage: 'This feature is online only.'
-    }
-  },
   getInitialState () {
     return {
       isOnline: true
@@ -34,11 +29,12 @@ const Offline = React.createClass({
     return (isOnline) ? children : offline
   },
   render () {
-    return (
-      <section>
+    var component = (
+      <span>
         {this.renderChildren(this.props.children, this.state.isOnline, this.props.offlineMessage)}
-      </section>
+      </span>
     )
+    return (this.props.offlineMessage !== 'undefined') ? component : null
   }
 })
 

@@ -50,6 +50,9 @@ const Wrapper = React.createClass({
     const signOut = (
       <li className='active'><a href='#' onClick={this.logout}>Sign Out</a></li>
     )
+    if (!navigator.onLine) {
+      return null
+    }
 
     return (isLoggedIn) ? signOut : signUp
 
@@ -79,7 +82,7 @@ const Wrapper = React.createClass({
             </div>
           </div>
         </nav>
-        <section className='container' role='section'>
+        <section className='container' role='main'>
           <section className='row'>
             <div className='col-md-9 col-md-offset-2'>
               {this.props.children}
