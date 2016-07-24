@@ -47,8 +47,6 @@ OfflineSave.sync = function (userData, endpoint) {
       body: data
     }
 
-    debugger
-
     return makeRequest(endpoint, request)
   })
 

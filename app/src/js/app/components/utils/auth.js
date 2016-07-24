@@ -31,8 +31,11 @@ Auth.getToken = function () {
 
 // Fetch user data from localStorage
 Auth.getUser = function () {
-  var geosnap = 'geosnap_' + Auth.getCurrentUser()
-  var user = localStorage[geosnap]
+  var base = Auth.getCurrentUser()
+  if (base.indexOf('geosnap_') === -1) {
+    base = 'geosnap_' + base
+  }
+  var user = localStorage[base]
   return (user) ? JSON.parse(user) : false
 }
 
@@ -73,7 +76,7 @@ Auth.getCurrentUser = function () {
 }
 // Check if user is logged in
 Auth.isLoggedIn = function () {
-  return (Auth.getCurrentUser()) ? true : false
+  return (localStorage['currentUser']) ? true : false
 }
 
 window.Auth = Auth

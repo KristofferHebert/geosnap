@@ -7,4 +7,6 @@ const config = {
   database: (process.env.NODE_ENV === 'production') ? 'geosnap_production' : 'geosnap_staging'
 }
 
+config.port = (config.env === 'development') ? 8001 : config.port
+
 export default config

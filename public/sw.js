@@ -31,10 +31,11 @@ this.addEventListener('install', (event) => {
 
 // Cache Requests
 this.addEventListener('fetch', (event) => {
+  console.log('event', event.request)
   event.respondWith(
     caches.match(event.request)
     .then(function (response) {
-
+      console.log('response', response)
         // If cached request found - return cache
       if (response) {
         console.log('Using cached response')
@@ -42,10 +43,12 @@ this.addEventListener('fetch', (event) => {
       }
 
       let fetchRequest = event.request.clone()
+      console.log('fetchRequest', fetchRequest)
 
         // Start request again since there are no files in the cache
       return fetch(fetchRequest)
             .then((response) => {
+              console.log('response', response)
 
                 // If response is invalid, throw error
               if (!response || response.status !== 200 || response.type !== 'basic') {
