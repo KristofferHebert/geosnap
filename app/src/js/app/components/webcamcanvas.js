@@ -28,7 +28,7 @@ const WebCamCanvas = React.createClass({
   getUserMedia,
   handleChange,
   getCurrentPosition (isOnline) {
-    if (isOnline) {
+    if (!isOnline) {
       return this.setState({
         geo: {
           value: '47.86, -122.22',
@@ -80,6 +80,12 @@ const WebCamCanvas = React.createClass({
   },
   handleSubmit (e) {
     e.preventDefault()
+
+    // prevent doubleclick
+    if (this.state.showSave === false) {
+      return false
+    }
+
     // toggle submit button
     this.setState({
       showSave: false
@@ -124,7 +130,6 @@ const WebCamCanvas = React.createClass({
 
       makeRequest('/snap/upload', options)
       .then((response) => {
-        console.log(response)
         self.setState({
           message: {
             value: 'Snap saved successfully.',
@@ -189,8 +194,8 @@ const WebCamCanvas = React.createClass({
             <textarea type='text' name='caption' value={this.state.caption} className='form-control'
               placeholder='Caption (Max 50 characters)' maxLength ='50' onChange={this.handleChange('caption')} rows='4' cols='50' />
           </div>
-          <div className='form-group'>
-            <input type='submit' className='btn btn-primary btn-block' value='Save' disable={!this.state.showSave}/>
+          <div className='form-group' hidden={!this.state.showSave}>
+            <input type='submit' className='btn btn-primary btn-block' value='Save' />
           </div>
           <div hidden={this.state.message.value === false} className={'padding text-center ' + this.state.message.className}>
             <p>{this.state.message.value}</p>

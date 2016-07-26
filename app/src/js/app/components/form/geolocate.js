@@ -22,7 +22,7 @@ const GeoLocateInput = React.createClass({
       <input type='text' name='geo' ref='geo' value={this.props.geo.value}
         className={classes} placeholder={this.props.geo.placeholder}
         disabled={this.props.geo.value !== '' && this.props.geo.loading === false}
-        required/>
+        required />
     )
   }
 })

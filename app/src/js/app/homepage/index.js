@@ -1,6 +1,7 @@
 import React from 'react'
 
 import makeRequest from '../components/utils/makeRequest'
+import Offline from '../components/utils/offline'
 import UserForm from '../components/form/userform'
 import SnapList from '../components/snaplist'
 
@@ -10,7 +11,9 @@ const HomePage = React.createClass({
       <section>
           <h1>Feed</h1>
           <SnapList />
-          <UserForm type={'signup'} endpoint={'/user'} successRedirect={'/#/snap'}/>
+          <Offline>
+            <UserForm type={'signup'} endpoint={'/user'} successRedirect={'/#/snap'}/>
+          </Offline>
       </section>
     )
   }

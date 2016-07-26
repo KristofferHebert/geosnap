@@ -31,59 +31,30 @@ this.addEventListener('install', (event) => {
 
 // Cache Requests
 this.addEventListener('fetch', (event) => {
-  if (event.request.method === 'POST') {
-    // ignore post requests
-    return fetch(event.request)
-    .then((response) => {
-      return response
-    })
-    .catch((err) => {
-      console.log('Post request failed:', err)
-    })
+  // don't cache non get requests
+  if (event.request.method !== 'GET') {
+    return event.respondWith(fetch(event.request))
   }
 
+  // make request and fallback to cache
   event.respondWith(
-    caches.match(event.request)
-    .then(function (response) {
-        // If cached request found - return cache
-      if (response) {
-        console.log('Using cached response')
-        return response
-      }
+    fetch(event.request)
+    .then((response) => {
 
-      let fetchRequest = event.request.clone()
-      console.log('fetchRequest', fetchRequest)
+      let responseToCache = response.clone()
+      // Cache the downloaded files
+      caches.open(APPNAME)
+          .then((cache) => {
+            console.log('Saving cache fetch response')
+            cache.put(event.request, responseToCache)
+          })
 
-        // Start request again since there are no files in the cache
-      return fetch(fetchRequest)
-            .then((response) => {
-              console.log('response', response)
-
-                // If response is invalid, throw error
-              if (!response || response.status !== 200 || response.type !== 'basic') {
-                return response
-              }
-
-              let responseToCache = response.clone()
-
-                // Otherwise cache the downloaded files
-              caches.open(APPNAME)
-                  .then((cache) => {
-                    console.log('Saving cache fetch response')
-                    cache.put(event.request, responseToCache)
-                  })
-
-                // And return the network response
-              return response
-            })
-            .catch((err) => {
-              console.log('Caching request failed:', err)
-            })
-
-
+        // And return the network response
+      return response
     })
-    .catch((err) => {
-      console.log('Request cache failed:', error)
+    .catch(() => {
+      // fall back to cache
+      return caches.match(event.request)
     })
-    )
+  )
 })
