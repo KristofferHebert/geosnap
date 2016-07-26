@@ -3,9 +3,9 @@ import path from 'path'
 import Snap from './model'
 const controller = {
   upload (req, res) {
+    let timestamp = req.body.timestamp
     let image = req.body.image
     let owner = req.body.owner
-    let timestamp = req.body.timestamp
     let coordinates = req.body.coordinates
     let filename = owner + '-' + timestamp + '.jpg'
 
@@ -14,23 +14,35 @@ const controller = {
     let matches = image.match(regex)
     const data = matches[2]
     const buffer = new Buffer(data, 'base64')
-    fs.writeFileSync(path.resolve(__dirname, '../../../public/images/upload') + '/' + filename, buffer)
 
-    var newSnap = {
-      owner: owner,
-      geometry: { coordinates: [coordinates.lat, coordinates.long] },
-      filename: filename
-    }
+    Snap.find({timestamp: timestamp }, (err, snap) => {
 
-    Snap.create(newSnap, (err, snap) => {
-      if (err) {
-        return res.send({success:false, error: err})
+      // snap exists, don't create
+      if (snap) {
+        return res.send({
+          success: true,
+          data: snap
+        })
+      } else {
+        fs.writeFileSync(path.resolve(__dirname, '../../../public/images/upload') + '/' + filename, buffer)
+
+        var newSnap = {
+          owner: owner,
+          geometry: { coordinates: [coordinates.lat, coordinates.long] },
+          filename: filename
+        }
+
+        Snap.create(newSnap, (err, snap) => {
+          if (err) {
+            return res.send({success:false, error: err})
+          }
+
+          return res.send({
+            success: true,
+            data: snap
+          })
+        })
       }
-
-      return res.send({
-        success: true,
-        data: snap
-      })
     })
   },
 
