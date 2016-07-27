@@ -78,6 +78,15 @@ const WebCamCanvas = React.createClass({
       console.log('video error', e)
     })
   },
+  debounceSubmit () {
+
+    return setTimeout(() => {
+      this.setState({
+        showSave: true
+      })
+    }, 5000)
+
+  },
   handleSubmit (e) {
     e.preventDefault()
 
@@ -113,9 +122,11 @@ const WebCamCanvas = React.createClass({
         message: {
           value: 'Snap saved successfully. It will be uploaded when you have internet connection.',
           className: 'bg-success'
-        },
-        showSave: true
+        }
       })
+
+      self.debounceSubmit()
+
       return OfflineSave.save(postRequest)
     } else {
       // If online, save to server
@@ -133,10 +144,11 @@ const WebCamCanvas = React.createClass({
         self.setState({
           message: {
             value: 'Snap saved successfully.',
-            className: 'bg-success',
-            showSave: true
+            className: 'bg-success'
           }
         })
+
+        self.debounceSubmit()
       })
       .catch((e) => {
         console.log(e)
