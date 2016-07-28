@@ -94,7 +94,6 @@ const WebCamCanvas = React.createClass({
     if (this.state.showSave === false) {
       return false
     }
-
     // toggle submit button
     this.setState({
       showSave: false
