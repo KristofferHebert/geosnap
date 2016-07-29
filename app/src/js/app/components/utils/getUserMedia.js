@@ -1,3 +1,4 @@
-const getUserMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.oGetUserMedia).bind(navigator)
+const getUserMedia = navigator.getUserMedia
+        || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia
 
 export default getUserMedia
