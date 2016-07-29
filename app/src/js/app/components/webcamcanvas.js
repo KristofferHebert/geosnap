@@ -98,6 +98,7 @@ const WebCamCanvas = React.createClass({
     this.setState({
       showSave: false
     })
+
     let canvas = this.refs.webcamcanvas
     let image = canvas.toDataURL('image/jpeg', 0.5)
     let geo = this.state.geo
