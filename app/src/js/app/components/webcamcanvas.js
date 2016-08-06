@@ -74,7 +74,8 @@ const WebCamCanvas = React.createClass({
     this.renderVideo()
   },
   renderVideo () {
-    this.getUserMedia({video: true}, this.handleVideo, (e) => {
+    var self = this
+    self.getUserMedia({video: true}, self.handleVideo, (e) => {
       console.log('video error', e)
     })
   },
